@@ -1,0 +1,7 @@
+{
+  "name": "RedVeci",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

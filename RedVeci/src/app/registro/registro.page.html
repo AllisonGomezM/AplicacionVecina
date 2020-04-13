@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-justify">Crea tu cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+<br><br>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item >
+        <ion-label position="floating"> Tu nombre</ion-label>
+        <ion-input [(ngModel)]="newCuenta.nombre" required type="text" name="nombre"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item >
+        <ion-label position="floating">Tu correo</ion-label>
+        <ion-input [(ngModel)]="newCuenta.email" required type="email" name="email"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item >
+        <ion-label position="floating">Tu contraseña</ion-label>
+        <ion-input [(ngModel)]="newCuenta.password" required type="password" name="password"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item >
+        <ion-label position="floating">Confirma tu contraseña</ion-label>
+        <ion-input [(ngModel)]="newCuenta.pass_confirmar" required type="password" name="pass_confirmar"></ion-input>
+      </ion-item>
+      <br><br>
+      <ion-button color="success" expand="block" (click)="crear()" >
+        <ion-icon name="color-wand-outline"></ion-icon> 
+        Crear mi cuenta
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>
