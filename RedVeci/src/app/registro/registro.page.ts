@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController,NavController } from '@ionic/angular';
 import { ServicioRegistroService } from "./servicio-registro.service";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { FolderPage } from '../folder/folder.page';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { error } from 'util';
+
 
 
 
@@ -11,41 +17,60 @@ import { ServicioRegistroService } from "./servicio-registro.service";
 })
 export class RegistroPage implements OnInit {
   newCuenta: ICuenta ={
-    nombre:"",
+    name:"",
     email:"",
     password:"",
-    pass_confirmar:"",
+    password_confirmation:"",
   };
-
-  regi = [];
-  constructor(public alertCtrl: AlertController, private servicioRegistro:ServicioRegistroService) { }
+  regi= [];
+  data:Observable<any>[];
+  token=[];
+ 
+  
+ 
+  constructor(public alertCtrl: AlertController, private servicioRegistro:ServicioRegistroService, private http:HttpClient,public navCtrl: NavController, public router: Router) { }
   
   crear(){
-    console.log(this.newCuenta);
-    if(this.newCuenta.nombre==""||this.newCuenta.email==""||this.newCuenta.password==""||this.newCuenta.pass_confirmar==""){
+    if(this.newCuenta.name==""||this.newCuenta.email==""||this.newCuenta.password==""||this.newCuenta.password_confirmation==""){
       this.doAlert();
     }
-    if(this.newCuenta.password==this.newCuenta.pass_confirmar){
-      this.servicioRegistro.crear(this.newCuenta).subscribe((data)=>{
-        this.regi=data;
+    if(this.newCuenta.password==this.newCuenta.password_confirmation){
+      this.servicioRegistro.crear(this.newCuenta).then((data)=>{
+        console.log(this.newCuenta);
         if (data["ok"]){
           console.log(data);
-          this.guardar();
+          this.servicioRegistro.setToken= data ['token'];
+          console.log(this.token);
+          this.router.navigateByUrl('folder/folderPage');
         }
-      })
-
-    }else{
+      },
+      error=>{
+        console.log("error baby");
+      }
+      ) 
+    }
+    else{
       this.AlertPass();
     }
-
+    
+  
   }
+
   async doAlert() {
     const alert = await this.alertCtrl.create({
       header: 'Campos vacios',
       subHeader: 'Alguno de los campos están vacios',
-      buttons: ['OK']
-    });
+      buttons: [
+        {
+          text:'OK',
+          
+        }
+      ],
+      
 
+    }
+    );
+    
     await alert.present();
   }
   async AlertPass() {
@@ -72,8 +97,8 @@ export class RegistroPage implements OnInit {
 
 }
 interface ICuenta{
-  nombre:String;
+  name:String;
   email:String;
   password:String;
-  pass_confirmar:String;
+  password_confirmation:String;
   }

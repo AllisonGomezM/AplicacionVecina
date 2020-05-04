@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController,NavController } from '@ionic/angular';
 import { ServicioLoginService } from "../servicio-login.service";
 
 
@@ -16,24 +16,23 @@ export class LoginPage implements OnInit {
     email:"",
     password:"",
   };
-
+ 
   user = [];
-  constructor(public alertCtrl: AlertController, private servicioLogin:ServicioLoginService) { }
+  constructor(public alertCtrl: AlertController, private servicioLogin:ServicioLoginService, public navCtrl: NavController) { }
 
   login(){
-    console.log(this.newUser);
     if(this.newUser.email==""&&this.newUser.password==""){
       this.doAlert();
     }else{
-      this.servicioLogin.login(this.newUser).subscribe((data)=>{
-        this.user=data;
+      console.log(this.newUser.email,this.newUser.password);
+     
+      this.servicioLogin.login(this.newUser).then((data)=>{
+        console.log(this.newUser);
         if (data["ok"]){
-          console.log(data);
-          
+          console.log(data); 
         }
-      }
-
-      )
+      }) 
+      this.navCtrl.navigateRoot('folderpage');
     }
 
   }
@@ -46,10 +45,7 @@ export class LoginPage implements OnInit {
 
     await alert.present();
   }
-  olvido(){
 
-  }
-  
   ngOnInit() {
     
   }
